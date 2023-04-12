@@ -258,6 +258,7 @@ def get_patches_strided(x, patch_size, patch_stride):
         for j in range(0, h-patch_size+1, patch_stride):
             patches.append(x[:, :, i:i+patch_size, j:j+patch_size])
     patches = th.stack(patches, dim=1)
+    #breakpoint()
     return patches
 
 

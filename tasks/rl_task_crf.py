@@ -87,19 +87,26 @@ class RLTaskCRF:
         self.env_test_stochastic = self.create_valid_env(env_prefix='test_sto', save_video=True, log_every_n_episodes=1)
 
         # Evaluate deterministic policy
-        reward_mean, reward_std, _, _ = evaluate_policy(self.model, self.env_test_deterministic, n_eval_episodes=20, deterministic=True)
+        reward_mean, reward_std, episode_observations, episode_attn_maps = evaluate_policy(self.model, self.env_test_deterministic, n_eval_episodes=20, deterministic=True)
         print(f"Mean deterministic reward = {reward_mean} +/- {reward_std}")
+        breakpoint()
         helper_logs = {
             'eval_final/reward_det_mean': reward_mean,
             'eval_final/reward_det_std': reward_std,
+            'eval_final/episode_observations_det': episode_observations,
+            'eval_final/episode_attn_maps_det': episode_attn_maps,
+
         }
         self.helper.log(helper_logs, step=self.helper.state.step)
 
         # Evaluate stochastic policy
-        reward_mean, reward_std, _, _ = evaluate_policy(self.model, self.env_test_stochastic, n_eval_episodes=20, deterministic=False)
+        reward_mean, reward_std, episode_observations, episode_attn_maps = evaluate_policy(self.model, self.env_test_stochastic, n_eval_episodes=20, deterministic=False)
         print(f"Mean stochastic reward = {reward_mean} +/- {reward_std}")
         helper_logs = {
             'eval_final/reward_stoch_mean': reward_mean,
             'eval_final/reward_stoch_std': reward_std,
+            'eval_final/episode_attn_maps_stoch': episode_attn_maps,
+            'eval_final/episode_observations_stoch': episode_observations,
+
         }
         self.helper.log(helper_logs, step=self.helper.state.step)
